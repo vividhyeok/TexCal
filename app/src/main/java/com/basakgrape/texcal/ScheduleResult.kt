@@ -7,5 +7,11 @@ data class ScheduleResult(
     val startMillis: Long,
     val endMillis: Long,
     val allDay: Boolean,
-    val confidence: Double  // ★ 추가
+    val confidence: Double
+)
+
+data class ScheduleParseOutput(
+    val result: ScheduleResult,
+    val promptVersion: String,
+    val retriedForSchema: Boolean
 )

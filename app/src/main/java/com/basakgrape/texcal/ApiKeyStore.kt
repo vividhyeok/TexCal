@@ -7,7 +7,10 @@ import androidx.security.crypto.MasterKey
 object ApiKeyStore {
 
     private const val PREF_NAME = "secure_api_prefs"
-    private const val KEY_OPENAI = "openai_api_key"
+    private const val KEY_DEEPSEEK_API = "deepseek_api_key"
+    private const val KEY_DEEPSEEK_MODEL = "deepseek_model"
+
+    const val DEFAULT_DEEPSEEK_MODEL = "deepseek-chat"
 
     private fun prefs(context: Context) =
         EncryptedSharedPreferences.create(
@@ -20,23 +23,41 @@ object ApiKeyStore {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
 
-    fun saveKey(context: Context, key: String) {
+    fun saveDeepSeekKey(context: Context, key: String) {
         prefs(context).edit()
-            .putString(KEY_OPENAI, key.trim())
+            .putString(KEY_DEEPSEEK_API, key.trim())
             .apply()
     }
 
-    fun getKey(context: Context): String? {
-        return prefs(context).getString(KEY_OPENAI, null)
+    fun getDeepSeekKey(context: Context): String? {
+        return prefs(context).getString(KEY_DEEPSEEK_API, null)
     }
 
-    fun hasKey(context: Context): Boolean {
-        return !getKey(context).isNullOrBlank()
+    fun hasDeepSeekKey(context: Context): Boolean {
+        return !getDeepSeekKey(context).isNullOrBlank()
     }
 
-    fun clearKey(context: Context) {
+    fun clearDeepSeekKey(context: Context) {
         prefs(context).edit()
-            .remove(KEY_OPENAI)
+            .remove(KEY_DEEPSEEK_API)
             .apply()
     }
+
+    fun saveDeepSeekModel(context: Context, model: String) {
+        val normalized = model.trim().ifBlank { DEFAULT_DEEPSEEK_MODEL }
+        prefs(context).edit()
+            .putString(KEY_DEEPSEEK_MODEL, normalized)
+            .apply()
+    }
+
+    fun getDeepSeekModel(context: Context): String {
+        val stored = prefs(context).getString(KEY_DEEPSEEK_MODEL, DEFAULT_DEEPSEEK_MODEL)
+        return stored?.ifBlank { DEFAULT_DEEPSEEK_MODEL } ?: DEFAULT_DEEPSEEK_MODEL
+    }
+
+    // Backward-compatible aliases for older call sites.
+    fun saveKey(context: Context, key: String) = saveDeepSeekKey(context, key)
+    fun getKey(context: Context): String? = getDeepSeekKey(context)
+    fun hasKey(context: Context): Boolean = hasDeepSeekKey(context)
+    fun clearKey(context: Context) = clearDeepSeekKey(context)
 }
