@@ -14,8 +14,8 @@ android {
         applicationId = "com.basakgrape.texcal"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = providers.gradleProperty("releaseNumber").orElse("1").get().toInt()
+        versionName = "1.0.${providers.gradleProperty("releaseNumber").orElse("1").get()}"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,6 +29,18 @@ android {
             )
         }
     }
+    signingConfigs {
+        create("ciRelease") {
+            val path = System.getenv("ANDROID_KEYSTORE_PATH")
+            if (!path.isNullOrBlank()) {
+                storeFile = file(path)
+                storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+            }
+        }
+    }
+    buildTypes.getByName("release").signingConfig = signingConfigs.getByName("ciRelease")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -40,6 +52,8 @@ android {
         compose = true
     }
 }
+
+System.getenv("TEXCAL_BUILD_DIR")?.let { layout.buildDirectory.set(file(it)) }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -65,5 +79,10 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+    implementation("com.google.mlkit:text-recognition-korean:16.0.1")
     testImplementation("org.json:json:20240303")
 }

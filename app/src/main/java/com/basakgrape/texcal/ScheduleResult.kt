@@ -1,17 +1,9 @@
 package com.basakgrape.texcal
 
-data class ScheduleResult(
-    val title: String,
-    val description: String,
-    val location: String?,
-    val startMillis: Long,
-    val endMillis: Long,
-    val allDay: Boolean,
-    val confidence: Double
-)
-
-data class ScheduleParseOutput(
-    val result: ScheduleResult,
-    val promptVersion: String,
-    val retriedForSchema: Boolean
+data class ScheduleDraft(
+    val title: String, val description: String, val location: String,
+    val startDate: String, val endDate: String, val startTime: String, val endTime: String,
+    val allDay: Boolean, val timeZone: String, val recurrence: String,
+    val reminderMinutes: Int?, val evidence: String, val uncertain: List<String>,
+    val selected: Boolean = true
 )
