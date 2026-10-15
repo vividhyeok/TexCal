@@ -39,7 +39,7 @@ jobs:
           echo "ANDROID_KEY_ALIAS=$ALIAS" >> "$GITHUB_ENV"
           echo "ANDROID_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
       - name: Test and build
-        run: ./gradlew testDebugUnitTest assembleRelease -PreleaseNumber=$BUILD_NUMBER
+        run: bash ./gradlew testDebugUnitTest assembleRelease -PreleaseNumber=$BUILD_NUMBER
       - name: Verify and name APK
         run: |
           APK=app/build/outputs/apk/release/app-release.apk
