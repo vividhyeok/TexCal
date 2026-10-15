@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.basakgrape.texcal"
-        minSdk = 26
+        minSdk = 23
         targetSdk = 36
         versionCode = providers.gradleProperty("releaseNumber").orElse("1").get().toInt()
         versionName = "1.0.${providers.gradleProperty("releaseNumber").orElse("1").get()}"
@@ -42,6 +42,7 @@ android {
     }
     buildTypes.getByName("release").signingConfig = signingConfigs.getByName("ciRelease")
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -56,6 +57,7 @@ android {
 System.getenv("TEXCAL_BUILD_DIR")?.let { layout.buildDirectory.set(file(it)) }
 
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

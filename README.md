@@ -1,6 +1,6 @@
 # TexCal
 
-개인용 Android 일정 추출 도구입니다. [최신 APK](https://github.com/vividhyeok/TexCal/releases/latest)를 다운로드해 설치합니다. 기존 디버그 APK는 서명 인증서가 달라 최초 전환 때 삭제 후 설치해야 합니다. 이후 릴리스 APK는 동일한 키로 서명되어 업데이트할 수 있습니다.
+개인용 Android 일정 추출 도구입니다. Android 6.0(API 23) 이상에서 [최신 APK](https://github.com/vividhyeok/TexCal/releases/latest)를 다운로드해 설치합니다. 기존 디버그 APK는 서명 인증서가 달라 최초 전환 때 삭제 후 설치해야 합니다. 이후 릴리스 APK는 동일한 키로 서명되어 업데이트할 수 있습니다.
 
 ## 사용
 
