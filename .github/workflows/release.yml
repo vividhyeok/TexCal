@@ -61,6 +61,14 @@ jobs:
           arch: x86_64
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: adb install -r app/build/outputs/apk/release/app-release.apk && adb shell pm path com.basakgrape.texcal
+      - name: Install APK on Android 16 emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: curl -fsSL -o "$RUNNER_TEMP/previous.apk" https://github.com/vividhyeok/TexCal/releases/download/v1.0.401/TexCal-v1.0.401.apk && adb install "$RUNNER_TEMP/previous.apk" && adb install -r app/build/outputs/apk/release/app-release.apk && adb shell pm path com.basakgrape.texcal
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
